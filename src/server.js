@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import pino from 'pino';
 import pinoHttp from 'pino-http';
+import dotenv from 'dotenv';
 
 const setupServer = () => {
   const app = express();
@@ -17,7 +18,7 @@ const setupServer = () => {
     });
   });
 
-  const PORT = 3000;
+  const PORT = Number(process.env.PORT);
   try {
     app.listen(PORT, () => {
       console.log(`Server is running on port ${PORT}`);
