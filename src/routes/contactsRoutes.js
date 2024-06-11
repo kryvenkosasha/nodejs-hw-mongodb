@@ -1,5 +1,5 @@
 import express from 'express';
-import Contact from '../db/Contacts';
+import Contact from '../db/Contacts.js';
 
 const router = express.Router();
 

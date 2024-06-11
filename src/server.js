@@ -1,31 +1,26 @@
 import express from 'express';
 import cors from 'cors';
-import pino from 'pino';
-import pinoHttp from 'pino-http';
-import dotenv from 'dotenv';
+import pino from 'pino-http';
+import contactRoutes from './routes/contactsRoutes.js';
 
 const setupServer = () => {
   const app = express();
 
   app.use(cors());
+  app.use(pino());
 
-  const logger = pino();
-  app.use(pinoHttp({ logger }));
+  app.use('/api', contactRoutes);
 
-  app.use('*', (req, res, next) => {
+  app.use((req, res, next) => {
     res.status(404).json({
-      message: 'Route not found',
+      message: 'Not found',
     });
   });
 
-  const PORT = Number(process.env.PORT);
-  try {
-    app.listen(PORT, () => {
-      console.log(`Server is running on port ${PORT}`);
-    });
-  } catch (err) {
-    console.log(`Error: ${err}`);
-  }
+  const PORT = process.env.PORT || 3000;
+  app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
+  });
 };
 
 export default setupServer;
