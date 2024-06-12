@@ -1,7 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import pino from 'pino-http';
-import contactRoutes from './routes/contactsRoutes.js';
+import { getAllContacts, getContactByID } from './services/contacts.js';
 
 const setupServer = () => {
   const app = express();
@@ -9,12 +9,48 @@ const setupServer = () => {
   app.use(cors());
   app.use(pino());
 
-  app.use('/api', contactRoutes);
+  // app.use('/api', contactRoutes);
+  app.get('/', (req, res) => {
+    res.status(200).json({ message: 'Welcome' });
+  });
 
-  app.use((req, res, next) => {
-    res.status(404).json({
-      message: 'Not found',
-    });
+  app.get('/contacts', async (req, res) => {
+    try {
+      const contacts = await getAllContacts();
+
+      res.status(200).json({
+        data: contacts,
+        message: 'success',
+      });
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({
+        message: 'Internal Server Error',
+      });
+    }
+  });
+
+  app.get('/contacts/:contactId', async (req, res) => {
+    try {
+      const contact = await getContactByID(req.params.contactId);
+      if (!contact) {
+        return res.status(404).json({
+          message: 'Contact not found',
+        });
+      }
+      res.status(200).json({
+        message: `Found contact with id ${req.params.contactId}!`,
+        data: contact,
+      });
+    } catch (error) {
+      res.status(500).json({
+        message: 'Internal Server Error',
+      });
+    }
+  });
+
+  app.get('*', (req, res, next) => {
+    res.status(404).json({ message: 'Not found' });
   });
 
   const PORT = process.env.PORT || 3000;
