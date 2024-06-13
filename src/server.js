@@ -45,11 +45,12 @@ const setupServer = () => {
     } catch (error) {
       res.status(500).json({
         message: 'Internal Server Error',
+        error: error,
       });
     }
   });
 
-  app.get('*', (req, res, next) => {
+  app.get('*', (req, res) => {
     res.status(404).json({ message: 'Not found' });
   });
 
