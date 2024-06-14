@@ -19,13 +19,15 @@ const setupServer = () => {
       const contacts = await getAllContacts();
 
       res.status(200).json({
-        data: contacts,
         message: 'success',
+        status: 200,
+        data: contacts,
       });
     } catch (error) {
       console.log(error);
       res.status(500).json({
         message: 'Internal Server Error',
+        status: 500,
       });
     }
   });
@@ -36,22 +38,28 @@ const setupServer = () => {
       if (!contact) {
         return res.status(404).json({
           message: 'Contact not found',
+          status: 404,
         });
       }
       res.status(200).json({
         message: `Found contact with id ${req.params.contactId}!`,
+        status: 200,
         data: contact,
       });
     } catch (error) {
       res.status(500).json({
         message: 'Internal Server Error',
+        status: 500,
         error: error,
       });
     }
   });
 
   app.get('*', (req, res) => {
-    res.status(404).json({ message: 'Not found' });
+    res.status(404).json({
+      message: 'Not found',
+      status: 404,
+    });
   });
 
   const PORT = process.env.PORT || 3000;
