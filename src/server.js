@@ -1,7 +1,8 @@
 import express from 'express';
 import cors from 'cors';
 import pino from 'pino-http';
-import { getAllContacts, getContactByID } from './services/contacts.js';
+import { contactsRouter } from './routers/contacts.js';
+import { HttpError } from 'http-errors';
 
 const setupServer = () => {
   const app = express();
@@ -14,48 +15,9 @@ const setupServer = () => {
     res.status(200).json({ message: 'Welcome' });
   });
 
-  app.get('/contacts', async (req, res) => {
-    try {
-      const contacts = await getAllContacts();
+  app.get(contactsRouter);
 
-      res.status(200).json({
-        message: 'success',
-        status: 200,
-        data: contacts,
-      });
-    } catch (error) {
-      console.log(error);
-      res.status(500).json({
-        message: 'Internal Server Error',
-        status: 500,
-      });
-    }
-  });
-
-  app.get('/contacts/:contactId', async (req, res) => {
-    try {
-      const contact = await getContactByID(req.params.contactId);
-      if (!contact) {
-        return res.status(404).json({
-          message: 'Contact not found',
-          status: 404,
-        });
-      }
-      res.status(200).json({
-        message: `Found contact with id ${req.params.contactId}!`,
-        status: 200,
-        data: contact,
-      });
-    } catch (error) {
-      res.status(500).json({
-        message: 'Internal Server Error',
-        status: 500,
-        error: error,
-      });
-    }
-  });
-
-  app.get('*', (req, res) => {
+  app.use('*', (req, res) => {
     res.status(404).json({
       message: 'Not found',
       status: 404,
@@ -68,4 +30,20 @@ const setupServer = () => {
   });
 };
 
+const errorHandler = (err, req, res, next) => {
+  if (err instanceof HttpError) {
+    res.status(err.status).json({
+      status: err.status,
+      message: err.name,
+      data: err,
+    });
+    return;
+  }
+
+  res.status(500).json({
+    status: 500,
+    message: 'Something went wrong :(',
+    data: err.message,
+  });
+};
 export default setupServer;
