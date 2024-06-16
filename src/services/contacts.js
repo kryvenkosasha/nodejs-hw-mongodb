@@ -14,3 +14,20 @@ export const createContact = async (payload) => {
   const contact = await contactColection.create(payload);
   return contact;
 };
+
+export const updateContact = async (contactID, payload) => {
+  const rawResult = await contactColection.findOneAndUpdate(
+    { _id: contactID },
+    payload,
+  );
+  if (!rawResult || !rawResult.value) return null;
+  return {
+    student: rawResult.value,
+    isNew: Boolean(rawResult?.lastErrorObject?.upserted),
+  };
+};
+
+export const deleteContact = async (contactID) => {
+  const contact = await contactColection.findByIdAndDelete({ _id: contactID });
+  return contact;
+};

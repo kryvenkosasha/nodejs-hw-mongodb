@@ -10,7 +10,7 @@ const setupServer = () => {
   app.use(cors());
   app.use(pino());
 
-  const errorHandler = (err, req, res, next) => {
+  const errorHandler = (err, req, res) => {
     if (err instanceof HttpError) {
       res.status(err.status).json({
         status: err.status,
@@ -27,7 +27,7 @@ const setupServer = () => {
     });
   };
 
-  const notFoundHandler = (req, res, next) => {
+  const notFoundHandler = (req, res) => {
     res.status(404).json({
       status: 404,
       message: 'Not found',
