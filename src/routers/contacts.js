@@ -2,10 +2,10 @@ import { Router } from 'express';
 import {
   getAllContacts,
   getContactByID,
-  createContactController,
-  patchContactController,
-  deleteContactController,
-} from '../services/contacts';
+  createContact,
+  updateContact,
+  deleteContact,
+} from '../services/contacts.js';
 
 export const ctrlWrapper = (controller) => {
   return async (req, res, next) => {
@@ -23,10 +23,10 @@ router.get('/contacts', ctrlWrapper(getAllContacts));
 
 router.get('/contacts/:contactId', ctrlWrapper(getContactByID));
 
-router.post('/contacts', ctrlWrapper(createContactController));
+router.post('/contacts', ctrlWrapper(createContact));
 
-router.patch('/contacts/:contactId', ctrlWrapper(patchContactController));
+router.patch('/contacts/:contactId', ctrlWrapper(updateContact));
 
-router.delete('/contacts/:contactId', ctrlWrapper(deleteContactController));
+router.delete('/contacts/:contactId', ctrlWrapper(deleteContact));
 
 export default router;
