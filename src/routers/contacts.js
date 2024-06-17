@@ -1,11 +1,11 @@
 import { Router } from 'express';
 import {
-  getAllContacts,
-  getContactByID,
-  createContact,
-  updateContact,
-  deleteContact,
-} from '../services/contacts.js';
+  getContactsController,
+  getContactByIDController,
+  createContactController,
+  patchContactController,
+  deleteContactController,
+} from '../controllers/contacts.js';
 
 export const ctrlWrapper = (controller) => {
   return async (req, res, next) => {
@@ -19,14 +19,14 @@ export const ctrlWrapper = (controller) => {
 
 const router = Router();
 
-router.get('/contacts', ctrlWrapper(getAllContacts));
+router.get('/contacts', ctrlWrapper(getContactsController));
 
-router.get('/contacts/:contactId', ctrlWrapper(getContactByID));
+router.get('/contacts/:contactId', ctrlWrapper(getContactByIDController));
 
-router.post('/contacts', ctrlWrapper(createContact));
+router.post('/contacts', ctrlWrapper(createContactController));
 
-router.patch('/contacts/:contactId', ctrlWrapper(updateContact));
+router.patch('/contacts/:contactId', ctrlWrapper(patchContactController));
 
-router.delete('/contacts/:contactId', ctrlWrapper(deleteContact));
+router.delete('/contacts/:contactId', ctrlWrapper(deleteContactController));
 
 export default router;
