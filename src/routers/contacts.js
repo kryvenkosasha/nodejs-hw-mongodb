@@ -8,17 +8,10 @@ import {
 } from '../controllers/contacts.js';
 
 import { validateBody } from '../middlewares/validateBody.js';
-import { createContactSchema } from '../validation/contacts.js';
+// import { createContactSchema } from '../validation/contacts.js';
+import { ctrlWrapper } from '../utils/ctrlWrapper.js';
 
-export const ctrlWrapper = (controller) => {
-  return async (req, res, next) => {
-    try {
-      await controller(req, res, next);
-    } catch (err) {
-      next(err);
-    }
-  };
-};
+
 
 const router = Router();
 
