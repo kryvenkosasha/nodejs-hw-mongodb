@@ -25,14 +25,6 @@ const contactSchema = new Schema(
       enum: ['work', 'home', 'personal'],
       default: 'personal',
     },
-    createdAt: {
-      type: Date,
-      tymestamp: true,
-    },
-    updatedAt: {
-      type: Date,
-      tymestamp: true,
-    },
   },
   {
     timestamps: true,

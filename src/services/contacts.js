@@ -22,11 +22,11 @@ export const updateContact = async (contactId, payload, next) => {
     payload,
   );
     if (!rawResult) {
-      next(createHttpError(404, 'Student not found'));
+      next(createHttpError(404, 'Contact not found'));
       return;
     }
   return {
-    student: rawResult.value,
+    contact: rawResult,
     isNew: Boolean(rawResult?.lastErrorObject?.upserted),
   };
 };
