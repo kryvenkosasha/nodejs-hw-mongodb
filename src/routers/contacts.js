@@ -6,9 +6,6 @@ import {
   patchContactController,
   deleteContactController,
 } from '../controllers/contacts.js';
-<<<<<<< Updated upstream
-import { ctrlWrapper } from '../utils/ctrlWrapper.js';
-=======
 
 import { validateBody } from '../middlewares/validateBody.js';
 import { createContactSchema } from '../validation/contacts.js';
@@ -22,7 +19,6 @@ export const ctrlWrapper = (controller) => {
     }
   };
 };
->>>>>>> Stashed changes
 
 const router = Router();
 
