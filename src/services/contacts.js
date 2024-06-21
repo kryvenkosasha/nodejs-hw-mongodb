@@ -41,6 +41,10 @@ export const updateContact = async (contactId, payload, next) => {
   const rawResult = await contactColection.findOneAndUpdate(
     { _id: contactId },
     payload,
+    {
+      new: true,
+      includeResultMetadata: true,
+    },
   );
   if (!rawResult) {
     next(createHttpError(404, 'Contact not found'));
