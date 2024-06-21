@@ -20,6 +20,10 @@ export const updateContact = async (contactId, payload) => {
   const rawResult = await contactColection.findOneAndUpdate(
     { _id: contactId },
     payload,
+    {
+      new: true,
+      includeResultMetadata: true,
+    },
   );
 
     if (!rawResult || !rawResult.value) return null;
