@@ -1,5 +1,5 @@
 import contactColection from '../db/Contacts.js';
-import createHttpError from 'http-errors';
+// import createHttpError from 'http-errors';
 
 export const getAllContacts = async () => {
   const contacts = await contactColection.find();
@@ -16,15 +16,14 @@ export const createContact = async (payload) => {
   return contact;
 };
 
-export const updateContact = async (contactId, payload, next) => {
+export const updateContact = async (contactId, payload) => {
   const rawResult = await contactColection.findOneAndUpdate(
     { _id: contactId },
     payload,
   );
-    if (!rawResult) {
-      next(createHttpError(404, 'Contact not found'));
-      return;
-    }
+
+    if (!rawResult || !rawResult.value) return null;
+
   return {
     contact: rawResult,
     isNew: Boolean(rawResult?.lastErrorObject?.upserted),
