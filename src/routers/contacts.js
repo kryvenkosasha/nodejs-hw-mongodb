@@ -11,14 +11,18 @@ import { validateBody } from '../middlewares/validateBody.js';
 import { isValidId } from '../middlewares/validateMongoId.js';
 import { createContactSchema } from '../validation/contacts.js';
 import { ctrlWrapper } from '../utils/ctrlWrapper.js';
+import { authenticate } from '../middlewares/authenticate.js';
 
 const router = Router();
+
+router.use(authenticate);
+
 
 router.get('/', ctrlWrapper(getContactsController));
 
 router.get(
   '/:contactId',
-  isValidId(),
+  isValidId,
   ctrlWrapper(getContactByIDController),
 );
 
@@ -31,13 +35,13 @@ router.post(
 router.patch(
   '/:contactId',
   validateBody(createContactSchema),
-  isValidId(),
+  isValidId,
   ctrlWrapper(patchContactController),
 );
 
 router.delete(
   '/:contactId',
-  isValidId(),
+  isValidId,
   ctrlWrapper(deleteContactController),
 );
 

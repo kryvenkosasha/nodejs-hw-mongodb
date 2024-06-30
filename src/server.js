@@ -4,6 +4,7 @@ import pino from 'pino-http';
 import router from './routers/index.js';
 import { errorHandler } from './middlewares/errorHandlerMiddleware.js';
 import { notFoundHandler } from './middlewares/notFoundHandlerMiddleware.js';
+import cookieParser from 'cookie-parser';
 
 const setupServer = () => {
   const app = express();
@@ -16,6 +17,7 @@ const setupServer = () => {
   app.use('*', notFoundHandler);
 
   app.use(errorHandler);
+  app.use(cookieParser());
 
   const PORT = process.env.PORT || 3000;
   app.listen(PORT, () => {
