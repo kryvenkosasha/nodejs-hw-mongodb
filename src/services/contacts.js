@@ -1,16 +1,21 @@
 import contactColection from '../db/Contacts.js';
-import createHttpError from 'http-errors';
 import { calculatePaginationData } from '../utils/calculatePaginationData.js';
 // import { SORT_ORDER } from '../constants/contacts.js';
 
-export const getAllContacts = async ({ page, perPage, sortOrder, sortBy }) => {
+export const getAllContacts = async ({
+  userId,
+  page,
+  perPage,
+  sortOrder,
+  sortBy,
+}) => {
   const limit = perPage;
   const skip = (page - 1) * perPage;
 
   const contactsQuery = contactColection.find();
 
   const contactsCount = await contactColection
-    .find()
+    .find(userId)
     .merge(contactsQuery)
     .countDocuments();
 
@@ -27,8 +32,8 @@ export const getAllContacts = async ({ page, perPage, sortOrder, sortBy }) => {
   };
 };
 
-export const getContactByID = async (contactID) => {
-  const contact = await contactColection.findById(contactID);
+export const getContactByID = async (contactID, userId) => {
+  const contact = await contactColection.findOne(contactID, userId);
   return contact;
 };
 
@@ -37,27 +42,31 @@ export const createContact = async (payload) => {
   return contact;
 };
 
-export const updateContact = async (contactId, payload, next) => {
+export const updateContact = async (userId, contactId, payload) => {
   const rawResult = await contactColection.findOneAndUpdate(
-    { _id: contactId },
+    {
+      _id: contactId,
+      userId: userId,
+    },
     payload,
     {
       new: true,
       includeResultMetadata: true,
     },
   );
-  if (!rawResult) {
-    next(createHttpError(404, 'Contact not found'));
-    return;
-  }
+  if (!rawResult || !rawResult.value) return null;
+
   return {
     contact: rawResult.value,
     isNew: Boolean(rawResult?.lastErrorObject?.upserted),
   };
 };
 
-export const deleteContact = async (contactId) => {
-  const contact = await contactColection.findByIdAndDelete({ _id: contactId });
+export const deleteContact = async (userId, contactId) => {
+  const contact = await contactColection.findOneAndDelete({
+    _id: contactId,
+    userId,
+  });
   console.log(contact);
   return contact;
 };

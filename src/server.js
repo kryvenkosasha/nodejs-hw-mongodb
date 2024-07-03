@@ -12,12 +12,13 @@ const setupServer = () => {
   app.use(cors());
   app.use(pino());
 
+  app.use(cookieParser());
+  
   app.use(router);
 
   app.use('*', notFoundHandler);
 
   app.use(errorHandler);
-  app.use(cookieParser());
 
   const PORT = process.env.PORT || 3000;
   app.listen(PORT, () => {
