@@ -5,7 +5,7 @@ const contactSchema = new Schema(
   {
     userId: {
       type: String,
-      ref: 'UsersCollection', 
+      ref: 'UsersCollection',
       required: true,
     },
     name: {
@@ -29,6 +29,9 @@ const contactSchema = new Schema(
       type: String,
       enum: ['work', 'home', 'personal'],
       default: 'personal',
+    },
+    photo: {
+      type: String,
     },
   },
   {
