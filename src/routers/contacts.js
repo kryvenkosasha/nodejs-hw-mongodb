@@ -9,7 +9,7 @@ import {
 
 import { validateBody } from '../middlewares/validateBody.js';
 import { isValidId } from '../middlewares/validateMongoId.js';
-import { createContactSchema } from '../validation/contacts.js';
+import { createContactSchema, updateContactSchema } from '../validation/contacts.js';
 import { ctrlWrapper } from '../utils/ctrlWrapper.js';
 import { authenticate } from '../middlewares/authenticate.js';
 
@@ -37,7 +37,7 @@ router.post(
 
 router.patch(
   '/:contactId',
-  validateBody(createContactSchema),
+  validateBody(updateContactSchema),
   isValidId,
   upload.single('photo'),
   ctrlWrapper(patchContactController),

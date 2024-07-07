@@ -10,6 +10,7 @@ import { parsedPaginationParams } from '../utils/parsePaginationParams.js';
 import { parseSortParams } from '../utils/parseSortParams.js';
 
 import { saveFileToUploadDir } from '../utils/saveFileToUploadir.js';
+import { saveToCloudinary } from '../utils/saveFileToCloudinary.js';
 import { env } from '../utils/env.js';
 
 export const getContactsController = async (req, res) => {
@@ -54,8 +55,8 @@ export const createContactController = async (req, res) => {
   let photoUrl;
 
   if (photo) {
-    if (env('ENABLE_CLOUDINARY') === 'true') {
-      photoUrl = await saveFileToUploadDir(photo);
+    if (env('ENABLE_CLOUDINARY') === 'True') {
+      photoUrl = await saveToCloudinary(photo);
     } else {
       photoUrl = await saveFileToUploadDir(photo);
     }
@@ -78,8 +79,8 @@ export const patchContactController = async (req, res, next) => {
   let photoUrl;
 
   if (photo) {
-    if (env('ENABLE_CLOUDINARY') === 'true') {
-      photoUrl = await saveFileToUploadDir(photo);
+    if (env('ENABLE_CLOUDINARY') === 'True') {
+      photoUrl = await saveToCloudinary(photo);
     } else {
       photoUrl = await saveFileToUploadDir(photo);
     }
