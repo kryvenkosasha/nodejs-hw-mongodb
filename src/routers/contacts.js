@@ -30,17 +30,17 @@ router.get(
 
 router.post(
   '/',
-  validateBody(createContactSchema),
-  upload.single('photo'),
   ctrlWrapper(createContactController),
+  upload.single('photo'),
+  validateBody(createContactSchema),
 );
 
 router.patch(
   '/:contactId',
-  validateBody(updateContactSchema),
   isValidId,
-  upload.single('photo'),
   ctrlWrapper(patchContactController),
+  upload.single('photo'),
+  validateBody(updateContactSchema),
 );
 
 router.delete(
