@@ -7,6 +7,8 @@ required:
 properties: 
   userId:
     description: "User's id"
+    type: string
+    example: 65ca67e7ae7f10c88b598384
   _id:
     description: "Contact's id"
     type: string
